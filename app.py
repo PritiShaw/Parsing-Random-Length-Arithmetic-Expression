@@ -7,8 +7,10 @@ os.system("chmod +x ./processor/a.out")
 @app.errorhandler(404)
 def entry_point(e):
     expression = request.args.get("exp")
-    if expression is not None:
-        exp = bytes(html.unescape(expression), 'utf-8')+b'\n'        
+    if expression is not None:   
+        expression = html.unescape(expression)
+        expression = expression.replace(" ", "")
+        exp = bytes(expression, 'utf-8')+b'\n'    
         try:
             three_address = subprocess.check_output("./processor/a.out", input=exp)
             three_address = str(three_address,'utf-8')
